@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Слайдер - калькулятор аренды авто</title>
+</head>
+<body>
+<script>
+    /*массив объектов авто*/
+    const carListArrayObjects = [
+        {
+            id: 1,
+            sum: 2700,
+            img: "https://static.tildacdn.com/tild3339-3332-4833-a164-656363386564/918020273_0157556532.jpg",
+        },
+        {
+            id: 2,
+            sum: 2700,
+            img: "https://static.tildacdn.com/tild3365-3239-4763-b933-623832366135/_57.JPG",
+        },
+        {
+            id: 3,
+            sum: 4000,
+            img: "https://static.tildacdn.com/tild6562-3830-4138-b134-663539363563/Car-Trailer5.jpg",
+        },
+        {
+            id: 4,
+            sum: 3500,
+            img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTv06mkwBp3WRmeU1Z02225Snj3yHVtro3mxnDbfjwW8A&s",
+        },
+        {
+            id: 5,
+            sum: 5500,
+            img: "https://s0.rbk.ru/v6_top_pics/media/img/6/86/756704831220866.jpg",
+        },
+        {
+            id: 6,
+            sum: 6500,
+            img: "https://motor.ru/thumb/1500x0/filters:quality(75):no_upscale()/imgs/2020/07/11/16/3996823/235b40a4cb2f8e5db019e7ea08b1e81e50957bee.jpg",
+        },
+        {
+            id: 7,
+            sum: 7500,
+            img: "https://s0.rbk.ru/v6_top_pics/media/img/7/62/756371626959627.jpg",
+        },
+    ];
+    /*переменные*/
+    let sliderCounter = 0;
+    let daysCounter = 1;
+    let countSale = 0;
+    let countSaleRub = 0;
+    const widthImg = 250;
+    const heightImg = 150;
+
+    /*node динамические элементы*/
+    const sliderContainer = document.createElement("div");
+    const slider = document.createElement("div");
+    const sumCar = document.createElement("div");
+    const sumCurrentCar = document.createElement("div");
+    const idCar = document.createElement("span");
+    const prev = document.createElement("button");
+    const next = document.createElement("button");
+    const img = document.createElement("img");
+    const days = document.createElement("div");
+    const daysDecrement = document.createElement("span");
+    const daysIncrement = document.createElement("span");
+    const daysCount = document.createElement("span");
+    const daysCountInput = document.createElement("input");
+    const sale = document.createElement("div");
+
+    /*стилизация node элементов*/
+    sliderContainer.style.display = "flex";
+    sliderContainer.style.flexDirection = "column";
+    sliderContainer.style.width = "100vh";
+    sliderContainer.style.height = "100%";
+    sliderContainer.style.maxWidth = "600px";
+    sliderContainer.style.margin = "0 auto";
+    slider.style.display = "flex";
+    slider.style.justifyContent = "center";
+    slider.style.marginBottom = "1rem";
+    slider.style.marginTop = "3rem";
+    img.alt = "img";
+    prev.textContent = "prev";
+    next.textContent = "next";
+    sumCar.style.textAlign = "center";
+    sumCar.style.marginBottom = "1rem";
+    days.style.fontSize = "1.5rem";
+    days.style.display = "flex";
+    days.style.justifyContent = "space-around";
+    days.style.marginBottom = "1rem";
+    daysDecrement.textContent = "-";
+    daysIncrement.textContent = "+";
+    daysDecrement.style.cursor = "pointer";
+    daysDecrement.style.padding = ".5rem";
+    daysDecrement.style.border = "1px solid green";
+    daysIncrement.style.cursor = "pointer";
+    daysIncrement.style.padding = ".5rem";
+    daysIncrement.style.border = "1px solid green";
+    sale.style.textAlign = "center";
+    sumCurrentCar.style.textAlign = "center";
+    sumCurrentCar.style.marginBottom = "1rem";
+    idCar.style.textAlign = "center";
+    daysCountInput.style.width = '60px'
+    daysCountInput.style.padding = '.5rem'
+    daysCountInput.type = 'number'
+    daysCountInput.min = '1'
+    daysCountInput.style.fontSize = "1.5rem";
+
+    /*Initial State начальное состояние*/
+    sumCar.textContent = `Общая стоимость: ${carListArrayObjects[0].sum} руб.`;
+    idCar.textContent = `id: ${carListArrayObjects[0].id}`;
+    daysCount.textContent = `Кол-во дней : `;
+    sale.textContent = `Скидка: ${countSale} % - ${countSaleRub} руб.`;
+    daysCountInput.value = '1'
+    sumCurrentCar.textContent = `Стоимость за сутки: ${carListArrayObjects[0].sum} руб.`;
+    img.src = carListArrayObjects[0].img;
+    img.width = widthImg;
+    img.height = heightImg;
+    daysIncrement.dataset.increment = "+";
+    daysDecrement.dataset.decrement = "-";
+
+    /*Логика*/
+    const calculate = () => {
+
+        if (daysCounter >= 5 && daysCounter < 10) {
+            countSale = 5;
+            countSaleRub =
+                +carListArrayObjects[sliderCounter].sum *
+                daysCounter *
+                (countSale / 100);
+            sumCurrentCar.textContent = `Стоимость за авто: ${carListArrayObjects[sliderCounter].sum} руб.`;
+            sumCar.textContent = `Общая стоимость: ${
+                +carListArrayObjects[sliderCounter].sum * daysCounter -
+                countSaleRub
+            } руб.`;
+            sale.textContent = `Скидка: ${countSale} % - ${countSaleRub} руб.`;
+        } else if (daysCounter >= 10) {
+            countSale = 10;
+            countSaleRub =
+                +carListArrayObjects[sliderCounter].sum *
+                daysCounter *
+                (countSale / 100);
+            sumCurrentCar.textContent = `Стоимость за авто: ${carListArrayObjects[sliderCounter].sum} руб.`;
+            sumCar.textContent = `Общая стоимость: ${
+                +carListArrayObjects[sliderCounter].sum * daysCounter -
+                countSaleRub
+            } руб.`;
+            sale.textContent = `Скидка: ${countSale} % - ${countSaleRub} руб.`;
+        } else {
+            countSale = 0;
+            countSaleRub = 0;
+            sumCurrentCar.textContent = `Стоимость за авто: ${carListArrayObjects[sliderCounter].sum} руб.`;
+            sumCar.textContent = `Общая стоимость: ${
+                +carListArrayObjects[sliderCounter].sum * daysCounter
+            } руб.`;
+            sale.textContent = `Скидка: ${countSale} % - ${countSaleRub} руб.`;
+        }
+    }
+
+    daysCountInput.addEventListener('input', (event) => {
+        daysCounter = +event.target.value
+        calculate()
+    })
+
+    sliderContainer.addEventListener("click", (event) => {
+        const dataset = event.target.dataset;
+        if (dataset.decrement === "-") {
+            if (daysCounter === 1) return;
+
+            daysCounter--;
+            daysCountInput.value =  daysCounter.toString()
+            console.log(daysCountInput.value)
+        } else if (dataset.increment === "+") {
+            daysCounter++;
+            daysCountInput.value = daysCounter.toString()
+            console.log(daysCountInput.value)
+        }
+        calculate()
+
+    });
+
+    const renderSliderDecrement = () => {
+        if (sliderCounter <= 0) return;
+        sliderCounter--;
+        img.src = carListArrayObjects[sliderCounter].img;
+        sumCurrentCar.textContent = `Стоимость за сутки: ${carListArrayObjects[sliderCounter].sum} руб.`;
+        sumCar.textContent = `Общая стоимость: ${
+            +carListArrayObjects[sliderCounter].sum * daysCounter
+        } руб.`;
+        `id: ${carListArrayObjects[sliderCounter].id}`;
+        idCar.textContent = `id: ${carListArrayObjects[sliderCounter].id}`;
+        sale.textContent = `Скидка: ${countSale} % - ${countSaleRub} руб.`;
+    };
+
+    const renderSliderIncrement = () => {
+        if (sliderCounter === carListArrayObjects.length - 1) return;
+        sliderCounter++;
+        img.src = carListArrayObjects[sliderCounter].img;
+        sumCurrentCar.textContent = `Стоимость за сутки: ${carListArrayObjects[sliderCounter].sum} руб.`;
+        sumCar.textContent = `Общая стоимость: ${
+            +carListArrayObjects[sliderCounter].sum * daysCounter
+        } руб.`;
+        idCar.textContent = `id: ${carListArrayObjects[sliderCounter].id}`;
+        sale.textContent = `Скидка: ${countSale} % - ${countSaleRub} руб.`;
+    };
+
+
+    prev.onclick = renderSliderDecrement;
+    next.onclick = renderSliderIncrement;
+
+    /*монтирование в разметку*/
+    daysCount.append(daysCountInput)
+    days.append(daysDecrement, daysCount, daysIncrement);
+    slider.append(prev);
+    slider.append(img);
+    slider.append(next);
+    sliderContainer.append(slider);
+    sliderContainer.append(sumCurrentCar);
+    sliderContainer.append(sumCar);
+    sliderContainer.append(idCar);
+    sliderContainer.append(days);
+    sliderContainer.append(sale);
+    document.body.append(sliderContainer);
+</script>
+</body>
+</html>
