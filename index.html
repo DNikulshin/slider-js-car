@@ -169,14 +169,11 @@
         const dataset = event.target.dataset;
         if (dataset.decrement === "-") {
             if (daysCounter === 1) return;
-
             daysCounter--;
             daysCountInput.value =  daysCounter.toString()
-            console.log(daysCountInput.value)
         } else if (dataset.increment === "+") {
             daysCounter++;
             daysCountInput.value = daysCounter.toString()
-            console.log(daysCountInput.value)
         }
         calculate()
 
