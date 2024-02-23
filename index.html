@@ -123,40 +123,27 @@
     daysDecrement.dataset.decrement = "-";
 
     /*Логика*/
+    const sampleCalculate = (saleCount = 0) => {
+        countSale = saleCount;
+        countSaleRub =
+            +carListArrayObjects[sliderCounter].sum *
+            daysCounter *
+            (countSale / 100);
+        sumCurrentCar.textContent = `Стоимость за авто: ${carListArrayObjects[sliderCounter].sum} руб.`;
+        sumCar.textContent = `Общая стоимость: ${
+            +carListArrayObjects[sliderCounter].sum * daysCounter -
+            countSaleRub
+        } руб.`;
+        sale.textContent = `Скидка: ${countSale} % - ${countSaleRub} руб.`;
+    }
     const calculate = () => {
 
         if (daysCounter >= 5 && daysCounter < 10) {
-            countSale = 5;
-            countSaleRub =
-                +carListArrayObjects[sliderCounter].sum *
-                daysCounter *
-                (countSale / 100);
-            sumCurrentCar.textContent = `Стоимость за авто: ${carListArrayObjects[sliderCounter].sum} руб.`;
-            sumCar.textContent = `Общая стоимость: ${
-                +carListArrayObjects[sliderCounter].sum * daysCounter -
-                countSaleRub
-            } руб.`;
-            sale.textContent = `Скидка: ${countSale} % - ${countSaleRub} руб.`;
+            sampleCalculate(5)
         } else if (daysCounter >= 10) {
-            countSale = 10;
-            countSaleRub =
-                +carListArrayObjects[sliderCounter].sum *
-                daysCounter *
-                (countSale / 100);
-            sumCurrentCar.textContent = `Стоимость за авто: ${carListArrayObjects[sliderCounter].sum} руб.`;
-            sumCar.textContent = `Общая стоимость: ${
-                +carListArrayObjects[sliderCounter].sum * daysCounter -
-                countSaleRub
-            } руб.`;
-            sale.textContent = `Скидка: ${countSale} % - ${countSaleRub} руб.`;
+            sampleCalculate(10)
         } else {
-            countSale = 0;
-            countSaleRub = 0;
-            sumCurrentCar.textContent = `Стоимость за авто: ${carListArrayObjects[sliderCounter].sum} руб.`;
-            sumCar.textContent = `Общая стоимость: ${
-                +carListArrayObjects[sliderCounter].sum * daysCounter
-            } руб.`;
-            sale.textContent = `Скидка: ${countSale} % - ${countSaleRub} руб.`;
+            sampleCalculate(0)
         }
     }
 
@@ -172,44 +159,37 @@
 
             daysCounter--;
             daysCountInput.value =  daysCounter.toString()
-            console.log(daysCountInput.value)
         } else if (dataset.increment === "+") {
             daysCounter++;
             daysCountInput.value = daysCounter.toString()
-            console.log(daysCountInput.value)
         }
         calculate()
-
     });
 
-    const renderSliderDecrement = () => {
-        if (sliderCounter <= 0) return;
-        sliderCounter--;
-        img.src = carListArrayObjects[sliderCounter].img;
-        sumCurrentCar.textContent = `Стоимость за сутки: ${carListArrayObjects[sliderCounter].sum} руб.`;
-        sumCar.textContent = `Общая стоимость: ${
-            +carListArrayObjects[sliderCounter].sum * daysCounter
-        } руб.`;
-        `id: ${carListArrayObjects[sliderCounter].id}`;
-        idCar.textContent = `id: ${carListArrayObjects[sliderCounter].id}`;
-        sale.textContent = `Скидка: ${countSale} % - ${countSaleRub} руб.`;
-    };
+    const sampleSlider = () => {
+    img.src = carListArrayObjects[sliderCounter].img;
+    sumCurrentCar.textContent = `Стоимость за сутки: ${carListArrayObjects[sliderCounter].sum} руб.`;
+    sumCar.textContent = `Общая стоимость: ${
+        +carListArrayObjects[sliderCounter].sum * daysCounter
+    } руб.`;
+    idCar.textContent = `id: ${carListArrayObjects[sliderCounter].id}`;
+    sale.textContent = `Скидка: ${countSale} % - ${countSaleRub} руб.`;
+    }
+    const renderSlider = (direction) => {
+       if(direction === '-') {
+           if (sliderCounter <= 0) return;
+           sliderCounter--;
+           sampleSlider()
+       } else if(direction === '+') {
+           if (sliderCounter === carListArrayObjects.length - 1) return;
+           sliderCounter++;
+           sampleSlider()
+       }
 
-    const renderSliderIncrement = () => {
-        if (sliderCounter === carListArrayObjects.length - 1) return;
-        sliderCounter++;
-        img.src = carListArrayObjects[sliderCounter].img;
-        sumCurrentCar.textContent = `Стоимость за сутки: ${carListArrayObjects[sliderCounter].sum} руб.`;
-        sumCar.textContent = `Общая стоимость: ${
-            +carListArrayObjects[sliderCounter].sum * daysCounter
-        } руб.`;
-        idCar.textContent = `id: ${carListArrayObjects[sliderCounter].id}`;
-        sale.textContent = `Скидка: ${countSale} % - ${countSaleRub} руб.`;
-    };
+    }
 
-
-    prev.onclick = renderSliderDecrement;
-    next.onclick = renderSliderIncrement;
+    prev.onclick = () => renderSlider('-');
+    next.onclick = () => renderSlider('+');
 
     /*монтирование в разметку*/
     daysCount.append(daysCountInput)
