@@ -136,6 +136,7 @@
         } руб.`;
         sale.textContent = `Скидка: ${countSale} % - ${countSaleRub} руб.`;
     }
+
     const calculate = () => {
 
         if (daysCounter >= 5 && daysCounter < 10) {
@@ -174,19 +175,25 @@
     idCar.textContent = `id: ${carListArrayObjects[sliderCounter].id}`;
     sale.textContent = `Скидка: ${countSale} % - ${countSaleRub} руб.`;
     }
+
     const renderSlider = (direction) => {
        if(direction === '-') {
-           if (sliderCounter <= 0) return;
+           if (sliderCounter === 0) sliderCounter = carListArrayObjects.length;
            sliderCounter--;
            sampleSlider()
        } else if(direction === '+') {
-           if (sliderCounter === carListArrayObjects.length - 1) return;
-           sliderCounter++;
-           sampleSlider()
+           if (sliderCounter === carListArrayObjects.length - 1) {
+            sliderCounter = 0
+            sampleSlider()
+           }  else {
+            sliderCounter++
+            sampleSlider()
+           }
+           
        }
 
     }
-
+    
     prev.onclick = () => renderSlider('-');
     next.onclick = () => renderSlider('+');
 
